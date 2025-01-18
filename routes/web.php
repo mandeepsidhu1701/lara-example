@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\JobController;
 use Illuminate\Support\Facades\Route;
-use App\Models\Job;
 
 
 Route::get('/', function () {
@@ -12,21 +12,25 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/jobs', function ()  {
-    $jobs = Job::with('employer')->cursorPaginate(3); //eager loading
+Route::view('/','home',[
+                        'greeting' => 'Hello',
+                        'name' => 'Mandeep Singh Sidhu'
+                        ]);
+Route::view('/contact','contact');
 
-    return view('jobs',[
-        'jobs' => $jobs
-    ]);
-});
+Route::resource('jobs',JobController::class);
 
-Route::get('/jobs/{id}', function ($id)  {
+// Route::controller(JobController::class)->group(function(){
+//     Route::get('/jobs','index');
+//     Route::get('/jobs/create', 'create');
+//     Route::get('/jobs/{job}', 'show'); // Route::get('/jobs/{job:job_id}',function (Job $job){});
+//     Route::post('/jobs','store');
+//     Route::get('/jobs/{job}/edit', 'edit');
+//     Route::patch('/jobs/{job}', 'update');
+//     Route::delete('/jobs/{job}', 'destroy');
 
-     $job =  Job::find($id);
+// });
 
-    return view('job',['job'=>$job]);
-});
 
-Route::get('/contact', function () {
-    return view('contact');
-});
+
+
